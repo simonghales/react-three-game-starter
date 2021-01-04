@@ -8,6 +8,9 @@ import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../../workers/
 import {applyPositionAngle, Buffers, storedPhysicsData} from "../../../../../physics/data";
 import {useCollisionsProviderContext} from "../../../../../physics/components/CollisionsProvider/context";
 import { PhysicsHandlerContext } from "./context";
+import {useLgPhysicsWorker} from "../LgPhysicsWorker/LgPhysicsWorker";
+import {useWorkerOnMessage} from "../../../../../game/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
+import PhysicsWorkerFixedUpdateProvider from "../../../../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
 
 type MeshSubscription = {
     uuid: ValidUUID,
@@ -29,10 +32,9 @@ const updateMeshes = (meshSubscriptions: Map<ValidUUID, MeshSubscription>, buffe
 const LgPhysicsHandler: React.FC = ({children}) => {
 
     const buffers = useBuffers()
-    const stateProxy = useProxy(logicAppState)
-    const [worker, setWorker] = useState<MessagePort | null>(null)
-    const workerLoaded = stateProxy.workerLoaded
+    const worker = useLgPhysicsWorker()
     const {handleBeginCollision, handleEndCollision} = useCollisionsProviderContext()
+    const onMessage = useWorkerOnMessage()
 
     const [meshSubscriptions] = useState(() => new Map<ValidUUID, MeshSubscription>())
 
@@ -50,14 +52,6 @@ const LgPhysicsHandler: React.FC = ({children}) => {
 
     useEffect(() => {
 
-        if (workerLoaded && workerStorage.worker) {
-            setWorker(workerStorage.worker)
-        }
-
-    }, [workerLoaded])
-
-    useEffect(() => {
-
         if (!worker) return
 
         let lastUpdate = 0
@@ -72,7 +66,7 @@ const LgPhysicsHandler: React.FC = ({children}) => {
 
         loop()
 
-        worker.onmessage = (event: MessageEvent) => {
+        const unsubscribe = onMessage((event: MessageEvent) => {
 
             const type = event.data.type
 
@@ -125,13 +119,13 @@ const LgPhysicsHandler: React.FC = ({children}) => {
                     break
             }
 
+        })
+
+        return () => {
+            unsubscribe()
         }
 
-
-
-    }, [worker])
-
-    if (!worker) return null
+    }, [worker, onMessage])
 
     return (
         <PhysicsHandlerContext.Provider value={{
@@ -139,7 +133,9 @@ const LgPhysicsHandler: React.FC = ({children}) => {
             unsubscribeMesh
         }}>
             <PhysicsProvider worker={worker} buffers={buffers}>
-                {children}
+                <PhysicsWorkerFixedUpdateProvider>
+                    {children}
+                </PhysicsWorkerFixedUpdateProvider>
             </PhysicsProvider>
         </PhysicsHandlerContext.Provider>
     )

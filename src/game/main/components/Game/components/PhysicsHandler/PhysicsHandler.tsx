@@ -1,16 +1,19 @@
 import React, {useEffect} from "react"
-import {useWorkersContext} from "../../../../../components/Workers/context";
-import PhysicsProvider, {useBuffers} from "../../../../../physics/components/PhysicsProvider/PhysicsProvider";
-import {useCollisionsProviderContext} from "../../../../../physics/components/CollisionsProvider/context";
-import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../../workers/physics/types";
-import {storedPhysicsData} from "../../../../../physics/data";
-import CollisionsProvider from "../../../../../physics/components/CollisionsProvider/CollisionsProvider";
+import {useWorkersContext} from "../../../../../../components/Workers/context";
+import PhysicsProvider, {useBuffers} from "../../../../../../physics/components/PhysicsProvider/PhysicsProvider";
+import {useCollisionsProviderContext} from "../../../../../../physics/components/CollisionsProvider/context";
+import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../../../workers/physics/types";
+import {storedPhysicsData} from "../../../../../../physics/data";
+import CollisionsProvider from "../../../../../../physics/components/CollisionsProvider/CollisionsProvider";
+import WorkerOnMessageProvider, {useWorkerOnMessage} from "../../../../../worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
+import PhysicsWorkerFixedUpdateProvider from "../../../../../worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
 
 const PhysicsHandler: React.FC = ({children}) => {
 
     const {physicsWorker} = useWorkersContext()
     const buffers = useBuffers()
     const {handleBeginCollision, handleEndCollision} = useCollisionsProviderContext()
+    const workerOnMessage = useWorkerOnMessage()
 
     useEffect(() => {
 
@@ -28,7 +31,7 @@ const PhysicsHandler: React.FC = ({children}) => {
 
         loop()
 
-        physicsWorker.onmessage = (event: MessageEvent) => {
+        const unsubscribe = workerOnMessage((event: MessageEvent) => {
 
             const type = event.data.type
 
@@ -68,24 +71,33 @@ const PhysicsHandler: React.FC = ({children}) => {
                     break
             }
 
+        })
+
+        return () => {
+            unsubscribe()
         }
 
-    }, [])
+    }, [workerOnMessage])
 
     return (
         <PhysicsProvider buffers={buffers} worker={physicsWorker}>
-            {children}
+            <PhysicsWorkerFixedUpdateProvider>
+                {children}
+            </PhysicsWorkerFixedUpdateProvider>
         </PhysicsProvider>
     )
 }
 
 const PhysicsWrapper: React.FC = ({children}) => {
+    const {physicsWorker} = useWorkersContext()
     return (
-        <CollisionsProvider>
-            <PhysicsHandler>
-                {children}
-            </PhysicsHandler>
-        </CollisionsProvider>
+        <WorkerOnMessageProvider worker={physicsWorker}>
+            <CollisionsProvider>
+                <PhysicsHandler>
+                    {children}
+                </PhysicsHandler>
+            </CollisionsProvider>
+        </WorkerOnMessageProvider>
     )
 }
 

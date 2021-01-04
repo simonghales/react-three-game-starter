@@ -7,5 +7,6 @@ export const workerStorage: {
 }
 
 export const logicAppState = proxy({
+    initiated: false,
     workerLoaded: false,
 })

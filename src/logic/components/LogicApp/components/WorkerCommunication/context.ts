@@ -1,5 +1,5 @@
-import {createContext, useContext} from "react";
-import {MessageData} from "../../../../../workers/shared/types";
+import {createContext, useCallback, useContext} from "react";
+import {MessageData, MessageKeys, SyncComponentMessageInfo, SyncComponentMessageType} from "../../../../../workers/shared/types";
 
 export type WorkerCommunicationContextState = {
     sendMessageToMain: (message: MessageData) => void,
@@ -13,4 +13,24 @@ export const useWorkerCommunicationContext = (): WorkerCommunicationContextState
 
 export const useSendMessageToMain = () => {
     return useWorkerCommunicationContext().sendMessageToMain
+}
+
+export const useSendSyncComponentMessage = () => {
+    const sendMessageRaw = useSendMessageToMain()
+
+    const sendMessage = useCallback((messageType: SyncComponentMessageType, info: SyncComponentMessageInfo, data?: any) => {
+
+        sendMessageRaw({
+            key: MessageKeys.SYNC_COMPONENT,
+            data: {
+                messageType,
+                info,
+                data,
+            },
+        })
+
+    }, [sendMessageRaw])
+
+    return sendMessage
+
 }

@@ -24,4 +24,8 @@ export const setWorker = (worker: MessagePort) => {
     logicAppState.workerLoaded = true
 }
 
+export const init = () => {
+    logicAppState.initiated = true
+}
+
 render(<LogicApp sendMessageToMain={sendMessageToMain}/>)

@@ -12,16 +12,35 @@ import {
 import {addBody, removeBody, setBody, updateBody} from "../../physics/bodies";
 import {logicWorkerStorage, syncBodies} from "./functions";
 
+
+const selfWorker = self as unknown as Worker
+
+let logicWorkerPort: MessagePort
+
+const beginPhysicsLoop = () => {
+
+    setInterval(() => {
+        stepWorld()
+        const message = {
+            type: WorkerOwnerMessageType.PHYSICS_STEP,
+        }
+        selfWorker.postMessage(message)
+        if (logicWorkerPort) {
+            logicWorkerPort.postMessage(message)
+        }
+    }, 1000 / 30)
+
+}
+
 const init = () => {
     syncBodies()
     initPhysicsListeners()
+    beginPhysicsLoop()
 }
-
-init()
 
 const step = (positions: Float32Array, angles: Float32Array) => {
 
-    stepWorld(positions, angles)
+    syncData(positions, angles)
 
     const data: any = {
         type: WorkerOwnerMessageType.FRAME,
@@ -37,10 +56,6 @@ const step = (positions: Float32Array, angles: Float32Array) => {
     selfWorker.postMessage(data, [positions.buffer, angles.buffer])
 
 }
-
-const selfWorker = self as unknown as Worker
-
-let logicWorkerPort: MessagePort
 
 const logicFrame = (positions: Float32Array, angles: Float32Array) => {
 
@@ -108,6 +123,9 @@ selfWorker.onmessage = (event: MessageEvent) => {
         props: any,
     };
     switch (type) {
+        case WorkerMessageType.INIT:
+            init()
+            break;
         case WorkerMessageType.STEP:
             const {positions, angles} = event.data
             step(positions, angles)

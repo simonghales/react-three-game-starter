@@ -6,10 +6,12 @@ export enum WorkerMessageType {
     REMOVE_BODY,
     SET_BODY,
     UPDATE_BODY,
+    PHYSICS_STEP
 }
 
 export enum WorkerOwnerMessageType {
     FRAME,
+    PHYSICS_STEP,
     SYNC_BODIES,
     BEGIN_COLLISION,
     END_COLLISION,

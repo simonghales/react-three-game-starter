@@ -17,14 +17,12 @@ export const syncData = (positions: Float32Array, angles: Float32Array) => {
 
 }
 
-export const stepWorld = (positions: Float32Array, angles: Float32Array) => {
+export const stepWorld = () => {
 
     var now = Date.now();
     var delta = !lastUpdate ? 1 / 60 : (now - lastUpdate) / 1000;
     planckWorld.step(delta)
     lastUpdate = now;
-
-    syncData(positions, angles)
 
 }
 

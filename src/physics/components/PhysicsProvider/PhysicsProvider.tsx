@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react"
+import React, {useCallback, useEffect, useState} from "react"
 import { PhysicsProviderContext } from "./context"
 import {WorkerMessageType} from "../../../workers/physics/types";
 import {AddBodyProps, RemoveBodyProps, SetBodyProps, UpdateBodyProps} from "../../bodies";

@@ -1,11 +1,10 @@
-import React, {useLayoutEffect, useState} from "react"
+import React, {useEffect, useLayoutEffect, useState} from "react"
 import { WorkersContext } from "./context"
 import {useMessagesContext} from "../Messages/context";
 import {WorkerOwnerMessageType} from "../../workers/physics/types";
 import {MessageData} from "../../workers/shared/types";
 
 const Workers: React.FC = ({children}) => {
-
     const [physicsWorker, setPhysicsWorker] = useState<Worker | null>(null)
     const [logicWorker, setLogicWorker] = useState<Worker | null>(null)
 

@@ -11,6 +11,7 @@ import {
 } from "../../physics/shared";
 import {addBody, removeBody, setBody, updateBody} from "../../physics/bodies";
 import {logicWorkerStorage, syncBodies} from "./functions";
+import {PHYSICS_UPDATE_RATE} from "../../physics/config";
 
 
 const selfWorker = self as unknown as Worker
@@ -28,7 +29,7 @@ const beginPhysicsLoop = () => {
         if (logicWorkerPort) {
             logicWorkerPort.postMessage(message)
         }
-    }, 1000 / 30)
+    }, PHYSICS_UPDATE_RATE)
 
 }
 

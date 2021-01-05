@@ -1,13 +1,15 @@
-import {Object3D} from "three";
+import {MathUtils, Object3D} from "three";
 import {MutableRefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {Vec2} from "planck-js";
 import {useFrame} from "react-three-fiber";
 import {AddBodyDef, BodyType, UpdateBodyData} from "../bodies";
 import {ValidUUID} from "../../utils/ids";
 import {usePhysicsProvider} from "../components/PhysicsProvider/context";
-import {applyPositionAngle, storedPhysicsData} from "../data";
+import {applyPositionAngle, getPositionAndAngle, storedPhysicsData} from "../data";
 import {useCollisionsProviderContext} from "../components/CollisionsProvider/context";
 import {PhysicsCacheKeys} from "../cache";
+import {useGetPhysicsStepTimeRemainingRatio} from "../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import {lerp} from "../../utils/numbers";
 
 export type BodyApi = {
     applyForceToCenter: (vec: Vec2, uuid?: ValidUUID) => void,
@@ -44,7 +46,9 @@ export const useIntervalBodySync = (ref: MutableRefObject<Object3D>, uuid: Valid
 
 export const useBodySync = (ref: MutableRefObject<Object3D>, uuid: ValidUUID, isDynamic: boolean, applyAngle: boolean = true) => {
 
+    const previousUpdateTimeRef = useRef(Date.now())
     const {buffers} = usePhysicsProvider()
+    const getPhysicsStepTimeRemainingRatio = useGetPhysicsStepTimeRemainingRatio()
 
     const onFrame = useCallback(() => {
         if (!isDynamic) {
@@ -52,9 +56,18 @@ export const useBodySync = (ref: MutableRefObject<Object3D>, uuid: ValidUUID, is
         }
         if (ref.current && buffers.positions.length && buffers.angles.length) {
             const index = storedPhysicsData.bodies[uuid]
-            applyPositionAngle(buffers, ref.current, index, applyAngle)
+            const update = getPositionAndAngle(buffers, index)
+            const body = ref.current
+            if (update) {
+                const {position, angle} = update
+                let physicsRemainingRatio = getPhysicsStepTimeRemainingRatio(previousUpdateTimeRef.current)
+                body.position.x = lerp(body.position.x, position[0], physicsRemainingRatio)
+                body.position.y = lerp(body.position.y, position[1], physicsRemainingRatio)
+                body.rotation.z = angle // todo - lerp
+                previousUpdateTimeRef.current = Date.now()
+            }
         }
-    }, [isDynamic, ref, uuid, applyAngle])
+    }, [isDynamic, ref, uuid, applyAngle, getPhysicsStepTimeRemainingRatio, previousUpdateTimeRef])
 
     useFrame(onFrame)
 

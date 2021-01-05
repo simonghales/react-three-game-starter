@@ -15,7 +15,7 @@ const WorkerOnMessageProvider: React.FC<{
 }> = ({children, worker}) => {
 
     const idCount = useRef(0)
-    const [subscriptions, setSubscriptions] = useState<{
+    const subscriptionsRef = useRef<{
         [key: string]: (event: MessageEvent) => void,
     }>({})
 
@@ -24,36 +24,25 @@ const WorkerOnMessageProvider: React.FC<{
         const id = idCount.current
         idCount.current += 1
 
-        setSubscriptions(state => ({
-            ...state,
-            [id]: callback,
-        }))
+        subscriptionsRef.current[id] = callback
 
         return () => {
-            setSubscriptions(state => {
-                const updatedState = {
-                    ...state,
-                }
-                delete updatedState[id]
-                return updatedState
-            })
+            delete subscriptionsRef.current[id]
         }
 
-    }, [])
+    }, [subscriptionsRef])
 
     useEffect(() => {
 
-        // is there risk of missing a message when subscriptions changes?
-
         worker.onmessage = (event: MessageEvent) => {
 
-            Object.values(subscriptions).forEach((callback) => {
+            Object.values(subscriptionsRef.current).forEach((callback) => {
                 callback(event)
             })
 
         }
 
-    }, [worker, subscriptions])
+    }, [worker, subscriptionsRef])
 
     return (
         <WorkerOnMessageContext.Provider value={{

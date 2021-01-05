@@ -21,6 +21,22 @@ export const storedPhysicsData: {
     bodies: {},
 }
 
+export const getPositionAndAngle = (buffers: Buffers, index: number): {
+    position: [number, number],
+    angle: number,
+} | null => {
+    if (index !== undefined && buffers.positions.length) {
+        const start = index * 2
+        const position = buffers.positions.slice(start, start + 2) as unknown as [number, number]
+        return {
+            position,
+            angle: buffers.angles[index],
+        }
+    } else {
+        return null
+    }
+}
+
 export const applyPositionAngle = (buffers: Buffers, object: Object3D | null, index: number, applyAngle: boolean = false) => {
     if (index !== undefined && buffers.positions.length && !!object) {
         const start = index * 2

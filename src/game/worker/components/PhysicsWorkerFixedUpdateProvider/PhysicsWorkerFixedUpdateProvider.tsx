@@ -1,7 +1,9 @@
 import React, {createContext, useCallback, useContext, useEffect, useRef, useState} from "react"
 import {useWorkerOnMessage} from "../WorkerOnMessageProvider/WorkerOnMessageProvider";
-import {WorkerOwnerMessageType} from "../../../../workers/physics/types";
+import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../workers/physics/types";
 import {PHYSICS_UPDATE_RATE} from "../../../../physics/config";
+import {useWorkersContext} from "../../../../components/Workers/context";
+import {useUpdateMeshes} from "../MeshSubscriptions/MeshSubscriptions";
 
 type State = {
     onFixedUpdate: (callback: (delta: number) => void) => () => void,
@@ -30,23 +32,17 @@ export const useFixedUpdate = (callback: (delta: number) => void) => {
 
 }
 
-let count = 0
-
-const reduce = 100000000000
-
-let slow = true
-
-setTimeout(() => {
-    slow = false
-}, 5000)
-
-const PhysicsWorkerFixedUpdateProvider: React.FC = ({children}) => {
+const PhysicsWorkerFixedUpdateProvider: React.FC<{
+    worker: Worker | MessagePort,
+    noLerping?: boolean,
+}> = ({children, worker, noLerping = false}) => {
 
     const lastUpdateRef = useRef(Date.now())
     const countRef = useRef(0)
     const callbacksRef = useRef<{
         [key: string]: (delta: number) => void,
     }>({})
+    const updateMeshes = useUpdateMeshes()
 
     const getPhysicsStepTimeRemainingRatio = useCallback((previousTime: number) => {
         const nextExpectedUpdate = lastUpdateRef.current + PHYSICS_UPDATE_RATE
@@ -54,9 +50,6 @@ const PhysicsWorkerFixedUpdateProvider: React.FC = ({children}) => {
         let ratio = (time - previousTime) / (nextExpectedUpdate - previousTime)
         ratio = ratio > 1 ? 1 : ratio
         ratio = ratio < 0 ? 0 : ratio
-        if (slow) {
-            return 1
-        }
         return ratio
     }, [lastUpdateRef])
 
@@ -100,6 +93,16 @@ const PhysicsWorkerFixedUpdateProvider: React.FC = ({children}) => {
 
             if (type === WorkerOwnerMessageType.PHYSICS_STEP) {
                 onPhysicsStep()
+                const positions = event.data.positions as Float32Array
+                const angles = event.data.angles as Float32Array
+                if (positions && angles) {
+                    updateMeshes(positions, angles, noLerping)
+                    worker.postMessage({
+                        type: WorkerMessageType.PHYSICS_STEP_PROCESSED,
+                        positions,
+                        angles,
+                    }, [positions.buffer, angles.buffer])
+                }
             }
 
         })
@@ -108,7 +111,7 @@ const PhysicsWorkerFixedUpdateProvider: React.FC = ({children}) => {
             unsubscribe()
         }
 
-    }, [onMessage, callbacksRef, lastUpdateRef])
+    }, [onMessage, callbacksRef, lastUpdateRef, worker, updateMeshes, noLerping])
 
     return (
         <Context.Provider value={{

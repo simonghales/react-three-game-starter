@@ -9257,10 +9257,10 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-r3f-perf@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.3.2.tgz#4ede884ec2d348dc49fbd8020dda08ab9f044e6d"
-  integrity sha512-KoDZF4oh9KQLD/i1zcIx9EZjbZjMXZ8Gd5p9DMcZVBL1VqVLjATrLvcUvyDo1fEle/7TjeCoAwaI1PYll8RVgA==
+r3f-perf@^0.75.0:
+  version "0.75.0"
+  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.75.0.tgz#ca789838ce594595222c3b464cbad44923465858"
+  integrity sha512-5Caj5fpYmpAVh+kfHjJ2vUWm6sqEyAt87+zhy8dNRSw79F9hJjyS245CtN6cGoTzyUU/cEyef0ksE5qEwqIi5A==
   dependencies:
     "@react-icons/all-files" "^4.1.0"
     zustand "^3.2.0"

@@ -11,6 +11,7 @@ import { PhysicsHandlerContext } from "./context";
 import {useLgPhysicsWorker} from "../LgPhysicsWorker/LgPhysicsWorker";
 import {useWorkerOnMessage} from "../../../../../game/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
 import PhysicsWorkerFixedUpdateProvider from "../../../../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import MeshSubscriptions from "../../../../../game/worker/components/MeshSubscriptions/MeshSubscriptions";
 
 type MeshSubscription = {
     uuid: ValidUUID,
@@ -133,9 +134,11 @@ const LgPhysicsHandler: React.FC = ({children}) => {
             unsubscribeMesh
         }}>
             <PhysicsProvider worker={worker} buffers={buffers}>
-                <PhysicsWorkerFixedUpdateProvider>
-                    {children}
-                </PhysicsWorkerFixedUpdateProvider>
+                <MeshSubscriptions>
+                    <PhysicsWorkerFixedUpdateProvider worker={worker}>
+                        {children}
+                    </PhysicsWorkerFixedUpdateProvider>
+                </MeshSubscriptions>
             </PhysicsProvider>
         </PhysicsHandlerContext.Provider>
     )

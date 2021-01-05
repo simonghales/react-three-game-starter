@@ -12,25 +12,75 @@ import {
 import {addBody, removeBody, setBody, updateBody} from "../../physics/bodies";
 import {logicWorkerStorage, syncBodies} from "./functions";
 import {PHYSICS_UPDATE_RATE} from "../../physics/config";
+import {maxNumberOfDynamicPhysicObjects} from "../../physics/data";
 
+const buffers = {
+    positions: new Float32Array(maxNumberOfDynamicPhysicObjects * 2),
+    angles: new Float32Array(maxNumberOfDynamicPhysicObjects),
+}
 
 const selfWorker = self as unknown as Worker
 
 let logicWorkerPort: MessagePort
 
+let pendingUpdate = false
+
+const sendUpdate = () => {
+    const rawMessage = {
+        type: WorkerOwnerMessageType.PHYSICS_STEP,
+    }
+    const {positions, angles} = buffers
+    const message = {
+        ...rawMessage,
+        positions,
+        angles,
+    }
+    if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
+        pendingUpdate = true
+    } else {
+        pendingUpdate = false
+        selfWorker.postMessage(message, [positions.buffer, angles.buffer])
+    }
+}
+
 const beginPhysicsLoop = () => {
 
     setInterval(() => {
         stepWorld()
-        const message = {
+        const {positions, angles} = buffers
+
+        syncData(positions, angles)
+
+        const rawMessage = {
             type: WorkerOwnerMessageType.PHYSICS_STEP,
         }
-        selfWorker.postMessage(message)
+
+        const message = {
+            ...rawMessage,
+            positions,
+            angles,
+        }
+
+        if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
+            pendingUpdate = true
+        } else {
+            pendingUpdate = false
+            selfWorker.postMessage(message, [positions.buffer, angles.buffer])
+        }
+
         if (logicWorkerPort) {
-            logicWorkerPort.postMessage(message)
+            logicWorkerPort.postMessage(rawMessage)
         }
     }, PHYSICS_UPDATE_RATE)
 
+}
+
+const stepProcessed = (positions: Float32Array, angles: Float32Array) => {
+    buffers.positions = positions
+    buffers.angles = angles
+    if (pendingUpdate) {
+        sendUpdate()
+    }
 }
 
 const init = () => {
@@ -124,6 +174,9 @@ selfWorker.onmessage = (event: MessageEvent) => {
         props: any,
     };
     switch (type) {
+        case WorkerMessageType.PHYSICS_STEP_PROCESSED:
+            stepProcessed(event.data.positions, event.data.angles)
+            break;
         case WorkerMessageType.INIT:
             init()
             break;

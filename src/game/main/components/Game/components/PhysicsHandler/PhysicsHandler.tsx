@@ -7,6 +7,8 @@ import {storedPhysicsData} from "../../../../../../physics/data";
 import CollisionsProvider from "../../../../../../physics/components/CollisionsProvider/CollisionsProvider";
 import WorkerOnMessageProvider, {useWorkerOnMessage} from "../../../../../worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
 import PhysicsWorkerFixedUpdateProvider from "../../../../../worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import MeshSubscriptions from "../../../../../worker/components/MeshSubscriptions/MeshSubscriptions";
+import MeshLerper from "../../../../../worker/main/components/MeshLerper/MeshLerper";
 
 const PhysicsHandler: React.FC = ({children}) => {
 
@@ -81,9 +83,12 @@ const PhysicsHandler: React.FC = ({children}) => {
 
     return (
         <PhysicsProvider buffers={buffers} worker={physicsWorker}>
-            <PhysicsWorkerFixedUpdateProvider>
-                {children}
-            </PhysicsWorkerFixedUpdateProvider>
+            <MeshSubscriptions>
+                <PhysicsWorkerFixedUpdateProvider worker={physicsWorker}>
+                    <MeshLerper/>
+                    {children}
+                </PhysicsWorkerFixedUpdateProvider>
+            </MeshSubscriptions>
         </PhysicsProvider>
     )
 }

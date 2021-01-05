@@ -6,7 +6,7 @@ export enum WorkerMessageType {
     REMOVE_BODY,
     SET_BODY,
     UPDATE_BODY,
-    PHYSICS_STEP
+    PHYSICS_STEP_PROCESSED,
 }
 
 export enum WorkerOwnerMessageType {

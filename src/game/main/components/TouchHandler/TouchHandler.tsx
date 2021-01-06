@@ -101,7 +101,7 @@ const TouchHandler: React.FC = ({children}) => {
             startingX = localState.mouseStartX
             startingY = localState.mouseStartY
         } else {
-            if (id && localState.touchStarts[id]) {
+            if (id != null && localState.touchStarts[id]) {
                 startingX = localState.touchStarts[id].x
                 startingY = localState.touchStarts[id].y
             }
@@ -179,6 +179,8 @@ const TouchHandler: React.FC = ({children}) => {
     }, [startingPoint, setStartingPoint])
 
     const onStart = useCallback((event: any) => {
+
+        console.log('start', event.type)
 
         if (event.type === "mousedown") {
             const x = event.clientX

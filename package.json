@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-hook/window-size": "^3.0.7",
     "@react-three/drei": "^2.2.13",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -14,7 +15,7 @@
     "@types/styled-components": "^5.1.7",
     "hotkeys-js": "^3.8.1",
     "planck-js": "^0.3.22",
-    "r3f-perf": "https://github.com/simonghales/r3f-perf",
+    "r3f-perf": "^0.75.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-nil": "^0.0.3",

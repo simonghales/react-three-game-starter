@@ -8,6 +8,7 @@ import {Canvas} from "react-three-fiber";
 import styled from "styled-components";
 import InputsHandler from "../InputsHandler/InputsHandler";
 import MeshRefs from "../../../../../meshes/components/MeshRefs/MeshRefs";
+import TouchHandler from "../../../TouchHandler/TouchHandler";
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -22,21 +23,23 @@ const GameCanvas: React.FC = () => {
     const messagesContext = useMessagesContext()
     return (
         <StyledContainer>
-            <Canvas shadowMap concurrent>
-                <MeshRefs>
-                    <InputsHandler>
-                        <WorkersContext.Provider value={workersContext}>
-                            <MessagesContext.Provider value={messagesContext}>
-                                <PhysicsHandler>
-                                    <LogicHandler>
-                                        <GameContents/>
-                                    </LogicHandler>
-                                </PhysicsHandler>
-                            </MessagesContext.Provider>
-                        </WorkersContext.Provider>
-                    </InputsHandler>
-                </MeshRefs>
-            </Canvas>
+            <TouchHandler>
+                <Canvas shadowMap concurrent>
+                    <MeshRefs>
+                        <InputsHandler>
+                            <WorkersContext.Provider value={workersContext}>
+                                <MessagesContext.Provider value={messagesContext}>
+                                    <PhysicsHandler>
+                                        <LogicHandler>
+                                            <GameContents/>
+                                        </LogicHandler>
+                                    </PhysicsHandler>
+                                </MessagesContext.Provider>
+                            </WorkersContext.Provider>
+                        </InputsHandler>
+                    </MeshRefs>
+                </Canvas>
+            </TouchHandler>
         </StyledContainer>
     )
 }

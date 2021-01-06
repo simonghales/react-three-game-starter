@@ -10,6 +10,7 @@ import {useCollisionsProviderContext} from "../components/CollisionsProvider/con
 import {PhysicsCacheKeys} from "../cache";
 import {useGetPhysicsStepTimeRemainingRatio} from "../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
 import {lerp} from "../../utils/numbers";
+import {useAddMeshSubscription} from "../../game/worker/components/MeshSubscriptions/MeshSubscriptions";
 
 export type BodyApi = {
     applyForceToCenter: (vec: Vec2, uuid?: ValidUUID) => void,
@@ -250,7 +251,7 @@ export const useBody = (propsFn: () => AddBodyDef, {
 
     }, [])
 
-    useBodySync(ref, uuid, isDynamic, applyAngle)
+    useAddMeshSubscription(uuid, ref.current, isDynamic, applyAngle)
 
     const api = useBodyApi(uuid)
 

@@ -20,10 +20,12 @@ export const useLerpMeshes = () => {
     return useContext(Context).lerpMeshes
 }
 
-export const useAddMeshSubscription = (uuid: ValidUUID, object: Object3D, applyAngle: boolean = true) => {
+export const useAddMeshSubscription = (uuid: ValidUUID, object: Object3D, applyAngle: boolean = true, isDynamic: boolean = true) => {
     const addSubscription = useContext(Context).addSubscription
 
     useEffect(() => {
+
+        if (!isDynamic) return
 
         const unsubscribe = addSubscription(uuid, object, applyAngle)
 
@@ -31,7 +33,7 @@ export const useAddMeshSubscription = (uuid: ValidUUID, object: Object3D, applyA
             unsubscribe()
         }
 
-    }, [uuid, object, applyAngle, addSubscription])
+    }, [uuid, object, applyAngle, isDynamic, addSubscription])
 
 }
 

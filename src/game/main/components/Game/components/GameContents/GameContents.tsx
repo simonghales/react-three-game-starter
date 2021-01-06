@@ -12,7 +12,7 @@ const GameContents: React.FC = () => {
             <Camera/>
             <Lights/>
             <Floor/>
-            {/*<Perf />*/}
+            <Perf />
         </>
     )
 }

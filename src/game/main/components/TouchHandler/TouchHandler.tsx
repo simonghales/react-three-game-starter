@@ -3,7 +3,8 @@ import styled from "styled-components";
 import {useWindowSize} from "@react-hook/window-size";
 import {lerp} from "../../../../utils/numbers";
 import {proxy, useProxy} from "valtio";
-import {calculateVectorBetweenVectors, calculateVectorsDistance} from "../../../../utils/vectors";
+import {angleToVector, calculateVectorBetweenVectors, calculateVectorsDistance} from "../../../../utils/vectors";
+import {degToRad, vectorToAngle} from "../../../../utils/angles";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -49,6 +50,12 @@ const StyledJoyInner = styled.div`
 enum StartingPoint {
     MOUSE = 'MOUSE',
     TOUCH = 'TOUCH',
+}
+
+export const joystickState = {
+    active: false,
+    xVel: 0,
+    yVel: 0,
 }
 
 const TouchHandler: React.FC = ({children}) => {
@@ -104,14 +111,19 @@ const TouchHandler: React.FC = ({children}) => {
 
             const max = 50
             const adjustment = distance > max ? max : distance
-            const threshold = adjustment/ max
+            const threshold = adjustment / max
             const vector = calculateVectorBetweenVectors(startingX, x, startingY, y)
             const xDiff = vector[0] * adjustment
             const yDiff = vector[1] * adjustment
-            const xVel = vector[0] * threshold
-            const yVel = vector[1] * threshold
 
-            // todo
+            const originalAngle = vectorToAngle(vector[0], vector[1] * -1)
+            const rotatedAngle = originalAngle + degToRad(45)
+
+            const [xVel, yVel] = angleToVector(rotatedAngle)
+
+            joystickState.xVel = xVel * threshold
+            joystickState.yVel = yVel * threshold
+            joystickState.active = true
 
             if (joyStickInnerRef.current) {
                 joyStickInnerRef.current.style.transform = `translate(${xDiff * -1}px, ${yDiff * -1}px)`
@@ -231,6 +243,14 @@ const TouchHandler: React.FC = ({children}) => {
         }
 
     }, [startingPoint, joyStickRef])
+
+    useEffect(() => {
+
+        if (!startingPoint) {
+            joystickState.active = false
+        }
+
+    }, [startingPoint])
 
     return (
         <StyledContainer onTouchStartCapture={onStart}

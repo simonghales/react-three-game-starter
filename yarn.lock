@@ -9257,10 +9257,9 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-r3f-perf@^0.75.0:
+"r3f-perf@https://github.com/simonghales/r3f-perf":
   version "0.75.0"
-  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.75.0.tgz#ca789838ce594595222c3b464cbad44923465858"
-  integrity sha512-5Caj5fpYmpAVh+kfHjJ2vUWm6sqEyAt87+zhy8dNRSw79F9hJjyS245CtN6cGoTzyUU/cEyef0ksE5qEwqIi5A==
+  resolved "https://github.com/simonghales/r3f-perf#6d7cfb2da4c668cc296679be8b5243a3331dc0fb"
   dependencies:
     "@react-icons/all-files" "^4.1.0"
     zustand "^3.2.0"

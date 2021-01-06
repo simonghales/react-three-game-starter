@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {useWindowSize} from "@react-hook/window-size";
 import {lerp} from "../../../../utils/numbers";
 import {proxy, useProxy} from "valtio";
-import {calculateVectorsDistance} from "../../../../utils/vectors";
+import {calculateVectorBetweenVectors, calculateVectorsDistance} from "../../../../utils/vectors";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -16,30 +16,35 @@ const StyledJoyContainer = styled.div`
   top: 0;
   left: 0;
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 250ms ease;
 `
 
 const StyledJoy = styled.div`
   width: 100px;
   height: 100px;
-  background-color: red;
+  border: 2px solid white;
+  background-color: rgba(0,0,0,0.5);
   border-radius: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0.5;
+  position: relative;
 `
 
-const getClientXY = (event: any): [number, number] | null => {
-    switch (event.type) {
-        case "mouseup":
-        case "mousedown":
-        case "mousemove":
-            return [event.clientX, event.clientY]
-        case "touchstart":
-        case "touchend":
-            return [event.changedTouches[0].clientX, event.changedTouches[0].clientY]
-        case "touchmove":
-            return [event.targetTouches[0].clientX, event.targetTouches[0].clientY]
-    }
-    return null
-}
+const StyledJoyInnerWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: transform 25ms linear;
+`
+
+const StyledJoyInner = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  transform: translate(-50%, -50%);
+`
 
 enum StartingPoint {
     MOUSE = 'MOUSE',
@@ -49,6 +54,7 @@ enum StartingPoint {
 const TouchHandler: React.FC = ({children}) => {
 
     const joyStickRef = useRef<HTMLDivElement | null>(null)
+    const joyStickInnerRef = useRef<HTMLDivElement | null>(null)
 
     const localStateRef = useRef<{
         mouseStarted: number,
@@ -96,7 +102,20 @@ const TouchHandler: React.FC = ({children}) => {
 
         const handleUpdate = (distance: number) => {
 
-            console.log('distance', distance)
+            const max = 50
+            const adjustment = distance > max ? max : distance
+            const threshold = adjustment/ max
+            const vector = calculateVectorBetweenVectors(startingX, x, startingY, y)
+            const xDiff = vector[0] * adjustment
+            const yDiff = vector[1] * adjustment
+            const xVel = vector[0] * threshold
+            const yVel = vector[1] * threshold
+
+            // todo
+
+            if (joyStickInnerRef.current) {
+                joyStickInnerRef.current.style.transform = `translate(${xDiff * -1}px, ${yDiff * -1}px)`
+            }
 
         }
 
@@ -124,7 +143,7 @@ const TouchHandler: React.FC = ({children}) => {
 
         }
 
-    }, [startingPoint, setStartingPoint, localState])
+    }, [startingPoint, setStartingPoint, localState, joyStickInnerRef])
 
     const addStartingPoint = useCallback((x: number, y: number, type: StartingPoint, id?: number) => {
 
@@ -206,9 +225,9 @@ const TouchHandler: React.FC = ({children}) => {
 
         if (startingPoint) {
             joystick.style.transform = `translate(${startingPoint.x}px, ${startingPoint.y}px)`
-            joystick.style.visibility = 'visible'
+            joystick.style.opacity = '1'
         } else {
-            joystick.style.visibility = 'hidden'
+            joystick.style.opacity = '0'
         }
 
     }, [startingPoint, joyStickRef])
@@ -222,7 +241,11 @@ const TouchHandler: React.FC = ({children}) => {
                          onMouseMoveCapture={onMove}>
             {children}
             <StyledJoyContainer ref={joyStickRef}>
-                <StyledJoy/>
+                <StyledJoy>
+                    <StyledJoyInnerWrapper ref={joyStickInnerRef}>
+                        <StyledJoyInner/>
+                    </StyledJoyInnerWrapper>
+                </StyledJoy>
             </StyledJoyContainer>
         </StyledContainer>
     )

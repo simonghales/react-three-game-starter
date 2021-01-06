@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "CI='' GENERATE_SOURCEMAP=false react-app-rewired && cp _redirects build",
+    "build": "CI='' GENERATE_SOURCEMAP=false react-app-rewired build && cp _redirects build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },

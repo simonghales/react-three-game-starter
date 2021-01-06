@@ -135,7 +135,7 @@ const LgPhysicsHandler: React.FC = ({children}) => {
         }}>
             <PhysicsProvider worker={worker} buffers={buffers}>
                 <MeshSubscriptions>
-                    <PhysicsWorkerFixedUpdateProvider worker={worker}>
+                    <PhysicsWorkerFixedUpdateProvider worker={worker} noLerping>
                         {children}
                     </PhysicsWorkerFixedUpdateProvider>
                 </MeshSubscriptions>

@@ -7,7 +7,7 @@ import {
     SyncComponentType,
     ValidProps
 } from "../../../../../../workers/shared/types";
-import Player from "../../../../../player/main/components/Player/Player";
+import Player from "../../../../../player/components/Player/Player";
 import {useWorkersContext} from "../../../../../../components/Workers/context";
 import {WorkerMessageType} from "../../../../../../workers/physics/types";
 

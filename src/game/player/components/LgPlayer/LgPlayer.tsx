@@ -1,11 +1,11 @@
 import React, {useRef} from "react"
-import {useSyncWithMainComponent} from "../../../../../temp/sync";
-import {SyncComponentType} from "../../../../../workers/shared/types";
-import {getPlayerUuid} from "../../../../meshes/uuids";
+import {useSyncWithMainComponent} from "../../../../temp/sync";
+import {SyncComponentType} from "../../../../workers/shared/types";
+import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
-import {useStoreMesh} from "../../../../meshes/components/MeshRefs/MeshRefs";
-import {useBodyRaw} from "../../../../../physics/hooks/hooks";
-import {BodyShape, BodyType} from "../../../../../physics/bodies";
+import {useStoreMesh} from "../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
+import {useBodyRaw} from "../../../../physics/hooks/hooks";
+import {BodyShape, BodyType} from "../../../../physics/bodies";
 import {Vec2} from "planck-js";
 
 const LgPlayer: React.FC = () => {
@@ -20,7 +20,7 @@ const LgPlayer: React.FC = () => {
         linearDamping: 4,
         fixtures: [{
             shape: BodyShape.circle,
-            radius: 0.75,
+            radius: 0.55,
             fixtureOptions: {
                 density: 20,
             }

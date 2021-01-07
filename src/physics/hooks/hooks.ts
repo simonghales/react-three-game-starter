@@ -8,9 +8,9 @@ import {usePhysicsProvider} from "../components/PhysicsProvider/context";
 import {applyPositionAngle, getPositionAndAngle, storedPhysicsData} from "../data";
 import {useCollisionsProviderContext} from "../components/CollisionsProvider/context";
 import {PhysicsCacheKeys} from "../cache";
-import {useGetPhysicsStepTimeRemainingRatio} from "../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import {useGetPhysicsStepTimeRemainingRatio} from "../../infrastructure/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
 import {lerp} from "../../utils/numbers";
-import {useAddMeshSubscription} from "../../game/worker/components/MeshSubscriptions/MeshSubscriptions";
+import {useAddMeshSubscription} from "../../infrastructure/worker/components/MeshSubscriptions/MeshSubscriptions";
 
 export type BodyApi = {
     applyForceToCenter: (vec: Vec2, uuid?: ValidUUID) => void,

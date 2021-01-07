@@ -5,10 +5,10 @@ import {useCollisionsProviderContext} from "../../../../../../physics/components
 import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../../../workers/physics/types";
 import {storedPhysicsData} from "../../../../../../physics/data";
 import CollisionsProvider from "../../../../../../physics/components/CollisionsProvider/CollisionsProvider";
-import WorkerOnMessageProvider, {useWorkerOnMessage} from "../../../../../worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
-import PhysicsWorkerFixedUpdateProvider from "../../../../../worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
-import MeshSubscriptions from "../../../../../worker/components/MeshSubscriptions/MeshSubscriptions";
-import MeshLerper from "../../../../../worker/main/components/MeshLerper/MeshLerper";
+import WorkerOnMessageProvider, {useWorkerOnMessage} from "../../../../../../infrastructure/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
+import PhysicsWorkerFixedUpdateProvider from "../../../../../../infrastructure/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import MeshSubscriptions from "../../../../../../infrastructure/worker/components/MeshSubscriptions/MeshSubscriptions";
+import MeshLerper from "../../../../../../infrastructure/worker/main/components/MeshLerper/MeshLerper";
 
 const PhysicsHandler: React.FC = ({children}) => {
 

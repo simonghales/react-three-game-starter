@@ -1,9 +1,12 @@
 import React, {useEffect, useLayoutEffect, useRef} from "react"
 import {useThree} from "react-three-fiber";
-import {DirectionalLight, Group, Matrix4, PerspectiveCamera} from "three";
+import {DirectionalLight, Group, Matrix4, Object3D, PerspectiveCamera} from "three";
 import {useTweaks} from "use-tweaks";
+import {useFollow} from "./hooks/useFollow";
 
-const Camera: React.FC = () => {
+const Camera: React.FC<{
+    followTarget: null | Object3D,
+}> = ({followTarget}) => {
 
     const groupRef = useRef<Group>(null as unknown as Group)
     const lightRef = useRef<DirectionalLight>(null as unknown as DirectionalLight)
@@ -15,6 +18,8 @@ const Camera: React.FC = () => {
         cameraRef.current.lookAt(0, 0, 1)
         void setDefaultCamera(cameraRef.current)
     }, [])
+
+    useFollow(followTarget, groupRef)
 
     return (
         <group ref={groupRef}>

@@ -180,8 +180,6 @@ const TouchHandler: React.FC = ({children}) => {
 
     const onStart = useCallback((event: any) => {
 
-        console.log('start', event.type)
-
         if (event.type === "mousedown") {
             const x = event.clientX
             const y = event.clientY

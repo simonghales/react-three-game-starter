@@ -9,9 +9,9 @@ import {applyPositionAngle, Buffers, storedPhysicsData} from "../../../../../phy
 import {useCollisionsProviderContext} from "../../../../../physics/components/CollisionsProvider/context";
 import { PhysicsHandlerContext } from "./context";
 import {useLgPhysicsWorker} from "../LgPhysicsWorker/LgPhysicsWorker";
-import {useWorkerOnMessage} from "../../../../../game/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
-import PhysicsWorkerFixedUpdateProvider from "../../../../../game/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
-import MeshSubscriptions from "../../../../../game/worker/components/MeshSubscriptions/MeshSubscriptions";
+import {useWorkerOnMessage} from "../../../../../infrastructure/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
+import PhysicsWorkerFixedUpdateProvider from "../../../../../infrastructure/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
+import MeshSubscriptions from "../../../../../infrastructure/worker/components/MeshSubscriptions/MeshSubscriptions";
 
 type MeshSubscription = {
     uuid: ValidUUID,

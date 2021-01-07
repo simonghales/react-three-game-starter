@@ -6,7 +6,7 @@ import LgPhysicsHandler from "./components/LgPhysicsHandler/LgPhysicsHandler";
 import WorkerCommunication from "./components/WorkerCommunication/WorkerCommunication";
 import {useProxy} from "valtio";
 import {logicAppState} from "./state";
-import MeshRefs from "../../../game/meshes/components/MeshRefs/MeshRefs";
+import MeshRefs from "../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
 import LgPhysicsWorker from "./components/LgPhysicsWorker/LgPhysicsWorker";
 
 const LogicApp: React.FC<{

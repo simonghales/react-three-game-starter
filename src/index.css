@@ -21,6 +21,7 @@ body {
   user-select:none;
   outline:0;
   -webkit-tap-highlight-color:rgba(255,255,255,0);
+  touch-action: none;
 }
 
 canvas {

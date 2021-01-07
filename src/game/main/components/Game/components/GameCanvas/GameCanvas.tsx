@@ -7,8 +7,9 @@ import LogicHandler from "../LogicHandler/LogicHandler";
 import {Canvas} from "react-three-fiber";
 import styled from "styled-components";
 import InputsHandler from "../InputsHandler/InputsHandler";
-import MeshRefs from "../../../../../meshes/components/MeshRefs/MeshRefs";
+import MeshRefs from "../../../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
 import TouchHandler from "../../../TouchHandler/TouchHandler";
+import CameraProvider from "../../../../../elements/camera/components/CameraProvider/CameraProvider";
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -25,19 +26,21 @@ const GameCanvas: React.FC = () => {
         <StyledContainer>
             <TouchHandler>
                 <Canvas shadowMap concurrent>
-                    <MeshRefs>
-                        <InputsHandler>
-                            <WorkersContext.Provider value={workersContext}>
-                                <MessagesContext.Provider value={messagesContext}>
-                                    <PhysicsHandler>
-                                        <LogicHandler>
-                                            <GameContents/>
-                                        </LogicHandler>
-                                    </PhysicsHandler>
-                                </MessagesContext.Provider>
-                            </WorkersContext.Provider>
-                        </InputsHandler>
-                    </MeshRefs>
+                    <CameraProvider>
+                        <MeshRefs>
+                            <InputsHandler>
+                                <WorkersContext.Provider value={workersContext}>
+                                    <MessagesContext.Provider value={messagesContext}>
+                                        <PhysicsHandler>
+                                            <LogicHandler>
+                                                <GameContents/>
+                                            </LogicHandler>
+                                        </PhysicsHandler>
+                                    </MessagesContext.Provider>
+                                </WorkersContext.Provider>
+                            </InputsHandler>
+                        </MeshRefs>
+                    </CameraProvider>
                 </Canvas>
             </TouchHandler>
         </StyledContainer>

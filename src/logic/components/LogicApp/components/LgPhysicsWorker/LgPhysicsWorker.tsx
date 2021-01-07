@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from "react"
 import {useProxy} from "valtio";
 import {logicAppState, workerStorage} from "../../state";
 import WorkerOnMessageProvider
-    from "../../../../../game/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
+    from "../../../../../infrastructure/worker/components/WorkerOnMessageProvider/WorkerOnMessageProvider";
 
 type LgPhysicsWorkerContextState = {
     worker: Worker | MessagePort,

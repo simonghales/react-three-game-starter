@@ -14,7 +14,17 @@ import {logicWorkerStorage, syncBodies} from "./functions";
 import {PHYSICS_UPDATE_RATE} from "../../physics/config";
 import {maxNumberOfDynamicPhysicObjects, storedPhysicsData} from "../../physics/data";
 
-const buffers = {
+type Buffers = {
+    positions: Float32Array,
+    angles: Float32Array,
+}
+
+const buffers: Buffers = {
+    positions: new Float32Array(maxNumberOfDynamicPhysicObjects * 2),
+    angles: new Float32Array(maxNumberOfDynamicPhysicObjects),
+}
+
+const logicBuffers: Buffers = {
     positions: new Float32Array(maxNumberOfDynamicPhysicObjects * 2),
     angles: new Float32Array(maxNumberOfDynamicPhysicObjects),
 }
@@ -28,9 +38,10 @@ let lastPhysicsUpdate = 0
 let lastSend = Date.now()
 let home = true
 
-const sendPhysicsUpdate = () => {
-    const {positions, angles} = buffers
+const sendPhysicsUpdate = (target: Worker | MessagePort, buffer: Buffers, handleBodies: (message: any) => any) => {
+    const {positions, angles} = buffer
     if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
+        console.log('cant send yet')
         return
     }
     syncData(positions, angles)
@@ -39,41 +50,54 @@ const sendPhysicsUpdate = () => {
         physicsTick,
         physicsUpdate: lastPhysicsUpdate,
     }
-    if (unsyncedBodies) {
-        rawMessage['bodies'] = dynamicBodiesUuids
-        setBodiesSynced()
-    }
+    handleBodies(rawMessage)
     const message = {
         ...rawMessage,
         positions,
         angles,
     }
-    lastSend = Date.now()
-    selfWorker.postMessage(message, [positions.buffer, angles.buffer])
-    home = false
+    target.postMessage(message, [positions.buffer, angles.buffer])
+}
+
+const sendPhysicsUpdateToLogic = () => {
+    sendPhysicsUpdate(logicWorkerPort, logicBuffers, (message: any) => {
+        if (unsyncedLogicBodies) {
+            message['bodies'] = dynamicBodiesUuids
+            setLogicBodiesSynced()
+        }
+    })
+}
+
+const sendPhysicsUpdateToMain = () => {
+    sendPhysicsUpdate(selfWorker, buffers, (message: any) => {
+        if (unsyncedBodies) {
+            message['bodies'] = dynamicBodiesUuids
+            setBodiesSynced()
+        }
+    })
 }
 
 const beginPhysicsLoop = () => {
 
-    // let lastUp = Date.now()
-
     setInterval(() => {physicsTick += 1
         stepWorld()
         lastPhysicsUpdate = Date.now()
-        sendPhysicsUpdate()
+        sendPhysicsUpdateToMain()
+        // sendPhysicsUpdateToLogic()
     }, PHYSICS_UPDATE_RATE)
 
 }
 
-let lastUpdate = Date.now()
-
-const stepProcessed = (lastProcessedPhysicsTick: number, positions: Float32Array, angles: Float32Array) => {
-    buffers.positions = positions
-    buffers.angles = angles
-    home = true
-    lastUpdate = Date.now()
+const stepProcessed = (isMain: boolean, lastProcessedPhysicsTick: number, positions: Float32Array, angles: Float32Array) => {
+    const buffer = isMain ? buffers : logicBuffers
+    buffer.positions = positions
+    buffer.angles = angles
     if (lastProcessedPhysicsTick < physicsTick) {
-        sendPhysicsUpdate()
+        if (isMain) {
+            sendPhysicsUpdateToMain()
+        } else {
+            sendPhysicsUpdateToLogic()
+        }
     }
 }
 
@@ -83,25 +107,6 @@ const init = () => {
     beginPhysicsLoop()
 }
 
-const logicFrame = (positions: Float32Array, angles: Float32Array) => {
-
-    syncData(positions, angles)
-
-    const data: any = {
-        type: WorkerOwnerMessageType.FRAME,
-        positions,
-        angles,
-    }
-
-    if (unsyncedLogicBodies) {
-        data['bodies'] = dynamicBodiesUuids
-        setLogicBodiesSynced()
-    }
-
-    logicWorkerPort.postMessage(data, [positions.buffer, angles.buffer])
-
-}
-
 const onMessageFromLogicWorker = (event: MessageEvent) => {
 
     const {type, props = {}} = event.data as {
@@ -109,10 +114,9 @@ const onMessageFromLogicWorker = (event: MessageEvent) => {
         props: any,
     };
     switch (type) {
-        // case WorkerMessageType.LOGIC_FRAME:
-        //     const {positions, angles} = event.data
-        //     logicFrame(positions, angles)
-        //     break;
+        case WorkerMessageType.PHYSICS_STEP_PROCESSED:
+            stepProcessed(false, event.data.physicsTick, event.data.positions, event.data.angles)
+            break;
         case WorkerMessageType.ADD_BODY:
             addBody(props)
             break;
@@ -150,7 +154,7 @@ selfWorker.onmessage = (event: MessageEvent) => {
     };
     switch (type) {
         case WorkerMessageType.PHYSICS_STEP_PROCESSED:
-            stepProcessed(event.data.physicsTick, event.data.positions, event.data.angles)
+            stepProcessed(true, event.data.physicsTick, event.data.positions, event.data.angles)
             break;
         case WorkerMessageType.INIT:
             init()

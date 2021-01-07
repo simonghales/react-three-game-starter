@@ -25,6 +25,8 @@ let logicWorkerPort: MessagePort
 
 let physicsTick = 0
 let lastPhysicsUpdate = 0
+let lastSend = Date.now()
+let home = true
 
 const sendPhysicsUpdate = () => {
     const {positions, angles} = buffers
@@ -46,13 +48,16 @@ const sendPhysicsUpdate = () => {
         positions,
         angles,
     }
+    lastSend = Date.now()
     selfWorker.postMessage(message, [positions.buffer, angles.buffer])
+    home = false
 }
 
 const beginPhysicsLoop = () => {
 
-    setInterval(() => {
-        physicsTick += 1
+    // let lastUp = Date.now()
+
+    setInterval(() => {physicsTick += 1
         stepWorld()
         lastPhysicsUpdate = Date.now()
         sendPhysicsUpdate()
@@ -65,9 +70,9 @@ let lastUpdate = Date.now()
 const stepProcessed = (lastProcessedPhysicsTick: number, positions: Float32Array, angles: Float32Array) => {
     buffers.positions = positions
     buffers.angles = angles
+    home = true
     lastUpdate = Date.now()
     if (lastProcessedPhysicsTick < physicsTick) {
-        console.log('pending update, process it...')
         sendPhysicsUpdate()
     }
 }
@@ -76,25 +81,6 @@ const init = () => {
     syncBodies()
     initPhysicsListeners()
     beginPhysicsLoop()
-}
-
-const step = (positions: Float32Array, angles: Float32Array) => {
-
-    syncData(positions, angles)
-
-    const data: any = {
-        type: WorkerOwnerMessageType.FRAME,
-        positions,
-        angles,
-    }
-
-    if (unsyncedBodies) {
-        data['bodies'] = dynamicBodiesUuids
-        setBodiesSynced()
-    }
-
-    selfWorker.postMessage(data, [positions.buffer, angles.buffer])
-
 }
 
 const logicFrame = (positions: Float32Array, angles: Float32Array) => {
@@ -123,10 +109,10 @@ const onMessageFromLogicWorker = (event: MessageEvent) => {
         props: any,
     };
     switch (type) {
-        case WorkerMessageType.LOGIC_FRAME:
-            const {positions, angles} = event.data
-            logicFrame(positions, angles)
-            break;
+        // case WorkerMessageType.LOGIC_FRAME:
+        //     const {positions, angles} = event.data
+        //     logicFrame(positions, angles)
+        //     break;
         case WorkerMessageType.ADD_BODY:
             addBody(props)
             break;
@@ -168,10 +154,6 @@ selfWorker.onmessage = (event: MessageEvent) => {
             break;
         case WorkerMessageType.INIT:
             init()
-            break;
-        case WorkerMessageType.STEP:
-            const {positions, angles} = event.data
-            step(positions, angles)
             break;
         case WorkerMessageType.ADD_BODY:
             addBody(props)

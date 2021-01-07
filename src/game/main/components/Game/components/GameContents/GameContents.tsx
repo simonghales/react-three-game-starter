@@ -11,7 +11,7 @@ const GameContents: React.FC = () => {
             <Lights/>
             <Floor/>
             <Wall/>
-            <Perf />
+            {/*<Perf />*/}
         </>
     )
 }

@@ -94,16 +94,6 @@ const PhysicsWorkerFixedUpdateProvider: React.FC<{
 
             if (type === WorkerOwnerMessageType.PHYSICS_STEP) {
 
-                if (event.data.bodies) {
-                    storedPhysicsData.bodies = event.data.bodies.reduce(
-                        (acc: { [key: string]: number }, id: string) => ({
-                            ...acc,
-                            [id]: (event.data as any).bodies.indexOf(id)
-                        }),
-                        {}
-                    )
-                }
-
                 const positions = event.data.positions as Float32Array
                 const angles = event.data.angles as Float32Array
                 updateMeshes(positions, angles, noLerping)
@@ -113,6 +103,18 @@ const PhysicsWorkerFixedUpdateProvider: React.FC<{
                     angles,
                     physicsTick: event.data.physicsTick as number,
                 }, [positions.buffer, angles.buffer])
+
+                // console.timeEnd('physStep')
+
+                if (event.data.bodies) {
+                    storedPhysicsData.bodies = event.data.bodies.reduce(
+                        (acc: { [key: string]: number }, id: string) => ({
+                            ...acc,
+                            [id]: (event.data as any).bodies.indexOf(id)
+                        }),
+                        {}
+                    )
+                }
                 onPhysicsStep()
 
             }

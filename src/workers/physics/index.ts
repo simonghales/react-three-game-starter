@@ -12,7 +12,7 @@ import {
 import {addBody, removeBody, setBody, updateBody} from "../../physics/bodies";
 import {logicWorkerStorage, syncBodies} from "./functions";
 import {PHYSICS_UPDATE_RATE} from "../../physics/config";
-import {maxNumberOfDynamicPhysicObjects} from "../../physics/data";
+import {maxNumberOfDynamicPhysicObjects, storedPhysicsData} from "../../physics/data";
 
 const buffers = {
     positions: new Float32Array(maxNumberOfDynamicPhysicObjects * 2),
@@ -23,63 +23,52 @@ const selfWorker = self as unknown as Worker
 
 let logicWorkerPort: MessagePort
 
-let pendingUpdate = false
+let physicsTick = 0
+let lastPhysicsUpdate = 0
 
-const sendUpdate = () => {
-    const rawMessage = {
-        type: WorkerOwnerMessageType.PHYSICS_STEP,
-    }
+const sendPhysicsUpdate = () => {
     const {positions, angles} = buffers
+    if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
+        return
+    }
+    syncData(positions, angles)
+    const rawMessage: any = {
+        type: WorkerOwnerMessageType.PHYSICS_STEP,
+        physicsTick,
+        physicsUpdate: lastPhysicsUpdate,
+    }
+    if (unsyncedBodies) {
+        rawMessage['bodies'] = dynamicBodiesUuids
+        setBodiesSynced()
+    }
     const message = {
         ...rawMessage,
         positions,
         angles,
     }
-    if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
-        pendingUpdate = true
-    } else {
-        pendingUpdate = false
-        selfWorker.postMessage(message, [positions.buffer, angles.buffer])
-    }
+    selfWorker.postMessage(message, [positions.buffer, angles.buffer])
 }
 
 const beginPhysicsLoop = () => {
 
     setInterval(() => {
+        physicsTick += 1
         stepWorld()
-        const {positions, angles} = buffers
-
-        syncData(positions, angles)
-
-        const rawMessage = {
-            type: WorkerOwnerMessageType.PHYSICS_STEP,
-        }
-
-        const message = {
-            ...rawMessage,
-            positions,
-            angles,
-        }
-
-        if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
-            pendingUpdate = true
-        } else {
-            pendingUpdate = false
-            selfWorker.postMessage(message, [positions.buffer, angles.buffer])
-        }
-
-        if (logicWorkerPort) {
-            logicWorkerPort.postMessage(rawMessage)
-        }
+        lastPhysicsUpdate = Date.now()
+        sendPhysicsUpdate()
     }, PHYSICS_UPDATE_RATE)
 
 }
 
-const stepProcessed = (positions: Float32Array, angles: Float32Array) => {
+let lastUpdate = Date.now()
+
+const stepProcessed = (lastProcessedPhysicsTick: number, positions: Float32Array, angles: Float32Array) => {
     buffers.positions = positions
     buffers.angles = angles
-    if (pendingUpdate) {
-        sendUpdate()
+    lastUpdate = Date.now()
+    if (lastProcessedPhysicsTick < physicsTick) {
+        console.log('pending update, process it...')
+        sendPhysicsUpdate()
     }
 }
 
@@ -175,7 +164,7 @@ selfWorker.onmessage = (event: MessageEvent) => {
     };
     switch (type) {
         case WorkerMessageType.PHYSICS_STEP_PROCESSED:
-            stepProcessed(event.data.positions, event.data.angles)
+            stepProcessed(event.data.physicsTick, event.data.positions, event.data.angles)
             break;
         case WorkerMessageType.INIT:
             init()

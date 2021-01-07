@@ -11,7 +11,6 @@ const Floor: React.FC = () => {
             <Plane args={[size, size]} receiveShadow>
                 <meshStandardMaterial color={"#3a3a3a"} />
             </Plane>
-            <gridHelper args={[size, size]} rotation={[degToRad(90), 0, 0]}/>
         </>
     )
 }

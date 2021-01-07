@@ -4,6 +4,7 @@ import {WorkerMessageType, WorkerOwnerMessageType} from "../../../../workers/phy
 import {PHYSICS_UPDATE_RATE} from "../../../../physics/config";
 import {useWorkersContext} from "../../../../components/Workers/context";
 import {useUpdateMeshes} from "../MeshSubscriptions/MeshSubscriptions";
+import {storedPhysicsData} from "../../../../physics/data";
 
 type State = {
     onFixedUpdate: (callback: (delta: number) => void) => () => void,
@@ -92,17 +93,28 @@ const PhysicsWorkerFixedUpdateProvider: React.FC<{
             const type = event.data.type
 
             if (type === WorkerOwnerMessageType.PHYSICS_STEP) {
-                onPhysicsStep()
+
+                if (event.data.bodies) {
+                    storedPhysicsData.bodies = event.data.bodies.reduce(
+                        (acc: { [key: string]: number }, id: string) => ({
+                            ...acc,
+                            [id]: (event.data as any).bodies.indexOf(id)
+                        }),
+                        {}
+                    )
+                }
+
                 const positions = event.data.positions as Float32Array
                 const angles = event.data.angles as Float32Array
-                if (positions && angles) {
-                    updateMeshes(positions, angles, noLerping)
-                    worker.postMessage({
-                        type: WorkerMessageType.PHYSICS_STEP_PROCESSED,
-                        positions,
-                        angles,
-                    }, [positions.buffer, angles.buffer])
-                }
+                updateMeshes(positions, angles, noLerping)
+                worker.postMessage({
+                    type: WorkerMessageType.PHYSICS_STEP_PROCESSED,
+                    positions,
+                    angles,
+                    physicsTick: event.data.physicsTick as number,
+                }, [positions.buffer, angles.buffer])
+                onPhysicsStep()
+
             }
 
         })

@@ -83,7 +83,7 @@ const beginPhysicsLoop = () => {
         stepWorld()
         lastPhysicsUpdate = Date.now()
         sendPhysicsUpdateToMain()
-        // sendPhysicsUpdateToLogic()
+        sendPhysicsUpdateToLogic()
     }, PHYSICS_UPDATE_RATE)
 
 }

@@ -104,8 +104,6 @@ const PhysicsWorkerFixedUpdateProvider: React.FC<{
                     physicsTick: event.data.physicsTick as number,
                 }, [positions.buffer, angles.buffer])
 
-                // console.timeEnd('physStep')
-
                 if (event.data.bodies) {
                     storedPhysicsData.bodies = event.data.bodies.reduce(
                         (acc: { [key: string]: number }, id: string) => ({

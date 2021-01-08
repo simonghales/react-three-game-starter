@@ -1,5 +1,5 @@
 import React from "react"
-import LgPlayer from "../../../../../game/player/components/LgPlayer/LgPlayer";
+import LgPlayer from "../../../player/components/LgPlayer/LgPlayer";
 
 const LgGame: React.FC = () => {
     return (

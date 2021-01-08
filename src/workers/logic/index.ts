@@ -5,6 +5,4 @@ import {logicWorkerHandler} from "react-three-game-engine";
 (self as any).$RefreshReg$ = () => {};
 (self as any).$RefreshSig$ = () => () => {};
 
-const selfWorker = self as unknown as Worker
-
-logicWorkerHandler(selfWorker, require("../../logic/components/LogicApp/LogicApp").LogicApp)
+logicWorkerHandler(self as unknown as Worker, require("../../game/logic/components/LgApp/LgApp").LgApp)

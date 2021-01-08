@@ -1,5 +1,5 @@
 import React from "react"
-import LgGame from "./components/LgGame/LgGame";
+import LgGame from "../LgGame/LgGame";
 import {withLogicWrapper} from "react-three-game-engine";
 
 const App: React.FC = () => {
@@ -8,4 +8,4 @@ const App: React.FC = () => {
     )
 }
 
-export const LogicApp = withLogicWrapper(App)
+export const LgApp = withLogicWrapper(App)

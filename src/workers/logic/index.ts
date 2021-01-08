@@ -7,4 +7,4 @@ import {logicWorkerHandler} from "r3";
 
 const selfWorker = self as unknown as Worker
 
-logicWorkerHandler(selfWorker, require("../Child").Child)
+logicWorkerHandler(selfWorker, require("../../logic/components/LogicApp/LogicApp").LogicApp)

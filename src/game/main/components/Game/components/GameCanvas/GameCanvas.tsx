@@ -28,21 +28,9 @@ const GameCanvas: React.FC = () => {
             <TouchHandler>
                 <Canvas shadowMap concurrent>
                     <GameEngine>
-                        <CameraProvider>
-                            <MeshRefs>
-                                <InputsHandler>
-                                    {/*<WorkersContext.Provider value={workersContext}>*/}
-                                    {/*    <MessagesContext.Provider value={messagesContext}>*/}
-                                    {/*        <PhysicsHandler>*/}
-                                    {/*            <LogicHandler>*/}
-                                                    <GameContents/>
-                                                {/*</LogicHandler>*/}
-                                            {/*</PhysicsHandler>*/}
-                                        {/*</MessagesContext.Provider>*/}
-                                    {/*</WorkersContext.Provider>*/}
-                                </InputsHandler>
-                            </MeshRefs>
-                        </CameraProvider>
+                        <InputsHandler>
+                            <GameContents/>
+                        </InputsHandler>
                     </GameEngine>
                 </Canvas>
             </TouchHandler>

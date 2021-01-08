@@ -21,6 +21,7 @@
     "react-nil": "^0.0.3",
     "react-scripts": "4.0.1",
     "react-three-fiber": "^5.3.10",
+    "react-three-game-engine": "^0.5.0",
     "styled-components": "^5.2.1",
     "three": "^0.124.0",
     "tweakpane": "^1.5.7",
@@ -55,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "r3": "file:.yalc/r3",
     "react-app-rewired": "^2.1.8"
   }
 }

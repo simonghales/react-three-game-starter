@@ -1,9 +1,12 @@
-import React from "react"
+import React, {useEffect} from "react"
 import Game from "../../game/main/components/Game/Game"
 
 const App: React.FC = () => {
+
     return (
-        <Game/>
+        <>
+            <Game/>
+        </>
     )
 }
 

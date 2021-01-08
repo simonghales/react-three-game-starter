@@ -1,12 +1,11 @@
 import {Box} from "@react-three/drei"
 import React from "react"
-import {useBodyRaw} from "../../../../../physics/hooks/hooks";
-import {BodyShape, BodyType} from "../../../../../physics/bodies";
 import {Vec2} from "planck-js";
+import {BodyShape, BodyType, useBody} from "react-three-game-engine";
 
 const Wall: React.FC = () => {
 
-    useBodyRaw(() => ({
+    useBody(() => ({
         type: BodyType.static,
         position: Vec2(0, -3),
         fixtures: [{

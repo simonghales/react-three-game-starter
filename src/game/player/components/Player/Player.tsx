@@ -4,17 +4,15 @@ import {degToRad} from "../../../../utils/angles";
 import {useController} from "./hooks/useController";
 import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
-import {useStoreMesh} from "../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
-import {useBodyApi, useBodySync} from "../../../../physics/hooks/hooks";
-import {useAddMeshSubscription} from "../../../../infrastructure/worker/components/MeshSubscriptions/MeshSubscriptions";
 import {useSetCameraFollowTarget} from "../../../elements/camera/components/CameraProvider/CameraProvider";
+import {useBodyApi, useStoreMesh, useSubscribeMesh} from "react-three-game-engine";
 
 const Player: React.FC = () => {
 
     const uuid = getPlayerUuid()
     const ref = useRef<Object3D>(new Object3D())
-    useAddMeshSubscription(uuid, ref.current, false)
-    // useBodySync(ref, uuid, true, false)
+    useSubscribeMesh(uuid, ref.current, false)
+
     useStoreMesh(uuid, ref.current)
     const api = useBodyApi(uuid)
     useController(uuid, api)

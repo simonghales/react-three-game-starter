@@ -1,11 +1,9 @@
 import React, {useRef} from "react"
-import {SyncComponentType} from "../../../../workers/shared/types";
 import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
-import {useStoreMesh} from "../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
-import {BodyShape, BodyType} from "../../../../physics/bodies";
 import {Vec2} from "planck-js";
-import {useBody, useSyncWithMainComponent} from "r3";
+import {BodyShape, BodyType, useBody, useStoreMesh, useSyncWithMainComponent} from "react-three-game-engine";
+import {SyncComponentType} from "../../../../misc/types";
 
 const LgPlayer: React.FC = () => {
 

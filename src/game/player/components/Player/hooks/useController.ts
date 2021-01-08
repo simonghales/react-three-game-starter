@@ -1,7 +1,7 @@
 import {useCallback} from "react";
 import {useFrame} from "react-three-fiber";
 import {Vec2} from "planck-js";
-import { BodyApi, useFixedUpdate } from "r3";
+import { BodyApi, useFixedUpdate } from "react-three-game-engine";
 import {inputsRawState} from "../../../../main/inputs/state";
 import {joystickState} from "../../../../main/components/TouchHandler/TouchHandler";
 

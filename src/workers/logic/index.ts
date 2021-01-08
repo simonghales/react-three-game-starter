@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import {logicWorkerHandler} from "r3";
+import {logicWorkerHandler} from "react-three-game-engine";
 
 // because of some weird react/dev/webpack/something quirk
 (self as any).$RefreshReg$ = () => {};

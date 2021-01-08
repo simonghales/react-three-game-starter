@@ -1,8 +1,7 @@
 import {Box} from "@react-three/drei"
 import React from "react"
-import {BodyShape, BodyType} from "../../../../../physics/bodies";
 import {Vec2} from "planck-js";
-import {useBody} from "r3";
+import {BodyShape, BodyType, useBody} from "react-three-game-engine";
 
 const Wall: React.FC = () => {
 

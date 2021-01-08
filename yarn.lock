@@ -9297,6 +9297,9 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
+"r3@file:.yalc/r3":
+  version "0.0.0"
+
 r3f-perf@^0.75.1:
   version "0.75.1"
   resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.75.1.tgz#298ca95956c9d99d39527f455173007ab4dcf268"

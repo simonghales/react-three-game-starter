@@ -35,13 +35,10 @@ let logicWorkerPort: MessagePort
 
 let physicsTick = 0
 let lastPhysicsUpdate = 0
-let lastSend = Date.now()
-let home = true
 
 const sendPhysicsUpdate = (target: Worker | MessagePort, buffer: Buffers, handleBodies: (message: any) => any) => {
     const {positions, angles} = buffer
     if (!(positions.byteLength !== 0 && angles.byteLength !== 0)) {
-        console.log('cant send yet')
         return
     }
     syncData(positions, angles)

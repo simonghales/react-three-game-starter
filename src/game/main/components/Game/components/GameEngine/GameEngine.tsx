@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Physics} from "react-three-game-engine";
 import Player from "../../../../../player/components/Player/Player";
-import MeshRefs from "../../../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
 import CameraProvider from "../../../../../elements/camera/components/CameraProvider/CameraProvider";
 import {SyncComponentType} from "../../../../../../misc/types";
 
@@ -15,11 +14,9 @@ const GameEngine: React.FC = ({children}) => {
 
     return (
         <CameraProvider>
-            <MeshRefs>
-                <Physics logicWorker={logicWorker} logicMappedComponents={mappedComponentTypes}>
-                    {children}
-                </Physics>
-            </MeshRefs>
+            <Physics logicWorker={logicWorker} logicMappedComponents={mappedComponentTypes}>
+                {children}
+            </Physics>
         </CameraProvider>
     );
 };

@@ -8,15 +8,35 @@ import {useStoreMesh} from "../../../../infrastructure/meshes/components/MeshRef
 import {useBodyApi, useBodySync} from "../../../../physics/hooks/hooks";
 import {useAddMeshSubscription} from "../../../../infrastructure/worker/components/MeshSubscriptions/MeshSubscriptions";
 import {useSetCameraFollowTarget} from "../../../elements/camera/components/CameraProvider/CameraProvider";
+import {useBody} from "r3";
+import {BodyShape, BodyType} from "../../../../physics/bodies";
+import {Vec2} from "planck-js";
 
 const Player: React.FC = () => {
 
     const uuid = getPlayerUuid()
     const ref = useRef<Object3D>(new Object3D())
-    useAddMeshSubscription(uuid, ref.current, false)
-    // useBodySync(ref, uuid, true, false)
+    // useAddMeshSubscription(uuid, ref.current, false)
+
+    const [,api] = useBody(() => ({
+        type: BodyType.dynamic,
+        position: Vec2(0, 0),
+        linearDamping: 4,
+        fixtures: [{
+            shape: BodyShape.circle,
+            radius: 0.55,
+            fixtureOptions: {
+                density: 20,
+            }
+        }],
+    }), {
+        uuid,
+        fwdRef: ref,
+    })
+
+
     useStoreMesh(uuid, ref.current)
-    const api = useBodyApi(uuid)
+    // const api = useBodyApi(uuid)
     useController(uuid, api)
     useSetCameraFollowTarget(ref.current)
 

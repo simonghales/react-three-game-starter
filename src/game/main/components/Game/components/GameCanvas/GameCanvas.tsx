@@ -10,6 +10,7 @@ import InputsHandler from "../InputsHandler/InputsHandler";
 import MeshRefs from "../../../../../../infrastructure/meshes/components/MeshRefs/MeshRefs";
 import TouchHandler from "../../../TouchHandler/TouchHandler";
 import CameraProvider from "../../../../../elements/camera/components/CameraProvider/CameraProvider";
+import GameEngine from "../GameEngine/GameEngine";
 
 const StyledContainer = styled.div`
   position: fixed;
@@ -26,21 +27,23 @@ const GameCanvas: React.FC = () => {
         <StyledContainer>
             <TouchHandler>
                 <Canvas shadowMap concurrent>
-                    <CameraProvider>
-                        <MeshRefs>
-                            <InputsHandler>
-                                <WorkersContext.Provider value={workersContext}>
-                                    <MessagesContext.Provider value={messagesContext}>
-                                        <PhysicsHandler>
-                                            <LogicHandler>
-                                                <GameContents/>
-                                            </LogicHandler>
-                                        </PhysicsHandler>
-                                    </MessagesContext.Provider>
-                                </WorkersContext.Provider>
-                            </InputsHandler>
-                        </MeshRefs>
-                    </CameraProvider>
+                    <GameEngine>
+                        <CameraProvider>
+                            <MeshRefs>
+                                <InputsHandler>
+                                    {/*<WorkersContext.Provider value={workersContext}>*/}
+                                    {/*    <MessagesContext.Provider value={messagesContext}>*/}
+                                    {/*        <PhysicsHandler>*/}
+                                    {/*            <LogicHandler>*/}
+                                                    <GameContents/>
+                                                {/*</LogicHandler>*/}
+                                            {/*</PhysicsHandler>*/}
+                                        {/*</MessagesContext.Provider>*/}
+                                    {/*</WorkersContext.Provider>*/}
+                                </InputsHandler>
+                            </MeshRefs>
+                        </CameraProvider>
+                    </GameEngine>
                 </Canvas>
             </TouchHandler>
         </StyledContainer>

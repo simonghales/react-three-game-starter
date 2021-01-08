@@ -25,6 +25,7 @@ export const setWorker = (worker: MessagePort) => {
 }
 
 export const init = () => {
+    console.log('logic init')
     logicAppState.initiated = true
 }
 

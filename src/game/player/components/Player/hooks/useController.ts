@@ -1,8 +1,8 @@
 import {useCallback} from "react";
 import {useFrame} from "react-three-fiber";
-import {inputsRawState} from "../../../../main/inputs/state";
-import {BodyApi} from "../../../../../physics/hooks/hooks";
 import {Vec2} from "planck-js";
+import { BodyApi } from "r3";
+import {inputsRawState} from "../../../../main/inputs/state";
 import { useFixedUpdate } from "../../../../../infrastructure/worker/components/PhysicsWorkerFixedUpdateProvider/PhysicsWorkerFixedUpdateProvider";
 import {joystickState} from "../../../../main/components/TouchHandler/TouchHandler";
 

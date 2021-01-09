@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import {Engine} from "react-three-game-engine";
 import Player from "../../../../../player/components/Player/Player";
 import CameraProvider from "../../../../../elements/camera/components/CameraProvider/CameraProvider";
@@ -10,7 +10,13 @@ const mappedComponentTypes = {
 
 const GameEngine: React.FC = ({children}) => {
 
-    const [logicWorker] = useState(() => new Worker('../../../../../../workers/logic', { type: 'module' }))
+    const [logicWorker, setLogicWorker] = useState<null | Worker>(null)
+
+    useLayoutEffect(() => {
+        setLogicWorker(new Worker('../../../../../../workers/logic/index.ts', { type: 'module' }))
+    }, [setLogicWorker])
+
+    if (!logicWorker) return null
 
     return (
         <CameraProvider>

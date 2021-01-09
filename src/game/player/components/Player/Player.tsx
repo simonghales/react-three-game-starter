@@ -1,11 +1,11 @@
-import React, {useRef} from "react"
+import React, {useEffect, useRef} from "react"
 import Character from "../../../../3d/components/Character/Character"
 import {degToRad} from "../../../../utils/angles";
 import {useController} from "./hooks/useController";
 import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
 import {useSetCameraFollowTarget} from "../../../elements/camera/components/CameraProvider/CameraProvider";
-import {useBodyApi, useStoreMesh, useSubscribeMesh} from "react-three-game-engine";
+import {useBodyApi, useSendMessage, useStoreMesh, useSubscribeMesh} from "react-three-game-engine";
 
 const Player: React.FC = () => {
 
@@ -17,6 +17,12 @@ const Player: React.FC = () => {
     const api = useBodyApi(uuid)
     useController(uuid, api)
     useSetCameraFollowTarget(ref.current)
+
+    const sendMessage = useSendMessage()
+
+    useEffect(() => {
+        sendMessage('', 'hello world')
+    }, [sendMessage])
 
     return (
         <group ref={ref}>

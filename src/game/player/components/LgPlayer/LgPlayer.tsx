@@ -1,8 +1,15 @@
-import React, {useRef} from "react"
+import React, {useEffect, useRef} from "react"
 import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
 import {Vec2} from "planck-js";
-import {BodyShape, BodyType, useBody, useStoreMesh, useSyncWithMainComponent} from "react-three-game-engine";
+import {
+    BodyShape,
+    BodyType,
+    useBody,
+    useOnMessage,
+    useStoreMesh,
+    useSyncWithMainComponent
+} from "react-three-game-engine";
 import {SyncComponentType} from "../../../../misc/types";
 
 const LgPlayer: React.FC = () => {
@@ -28,6 +35,16 @@ const LgPlayer: React.FC = () => {
     })
 
     useSyncWithMainComponent(SyncComponentType.PLAYER, "player")
+
+    const subscribe = useOnMessage()
+
+    useEffect(() => {
+
+        const unsubscribe = subscribe('', (data: any) => {
+            console.log('received message!', data)
+        })
+
+    }, [subscribe])
 
     return null
 }

@@ -21,7 +21,7 @@
     "react-nil": "^0.0.3",
     "react-scripts": "4.0.1",
     "react-three-fiber": "^5.3.10",
-    "react-three-game-engine": "^0.6.0",
+    "react-three-game-engine": "^0.9.0",
     "styled-components": "^5.2.1",
     "three": "^0.124.0",
     "tweakpane": "^1.5.7",

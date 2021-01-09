@@ -9455,7 +9455,7 @@ react-refresh@^0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-scripts@4.0.1:
+react-scripts@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-4.0.1.tgz#34974c0f4cfdf1655906c95df6a04d80db8b88f0"
   integrity sha512-NnniMSC/wjwhcJAyPJCWtxx6CWONqgvGgV9+QXj1bwoW/JI++YF1eEf3Upf/mQ9KmP57IBdjzWs1XvnPq7qMTQ==
@@ -9536,10 +9536,10 @@ react-three-fiber@^5.3.10:
     use-asset "^0.1.5"
     utility-types "^3.10.0"
 
-react-three-game-engine@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/react-three-game-engine/-/react-three-game-engine-0.9.0.tgz#2f14667b13cf24050242d631fcda153300069239"
-  integrity sha512-C/gsqO5VXM69KVzac7LVmAfuh+zRZVQfRnnHn5vc3IF93QHrj6PoQZzto2TG/pF0yOUIGx6uNMAk4PQsaEVXRA==
+react-three-game-engine@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-three-game-engine/-/react-three-game-engine-0.9.1.tgz#cdd43346b3e6b56140905108bd3eaa22efe13e2d"
+  integrity sha512-dgVJfpu5Fr/B0DKapM9G88Td8BoI9eaRNShic3ihK65O+0I0MUo+CIVhRrCzwaYKWRW65YYQ5k6FiZiWC8wyQg==
   dependencies:
     react-nil "^0.0.3"
     valtio "^0.5.2"

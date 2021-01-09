@@ -6,7 +6,7 @@ import {
     BodyShape,
     BodyType,
     useBody,
-    useOnMessage,
+    useOnMessage, useSendMessage,
     useStoreMesh,
     useSyncWithMainComponent
 } from "react-three-game-engine";
@@ -37,14 +37,19 @@ const LgPlayer: React.FC = () => {
     useSyncWithMainComponent(SyncComponentType.PLAYER, "player")
 
     const subscribe = useOnMessage()
+    const sendMessage = useSendMessage()
 
     useEffect(() => {
 
         const unsubscribe = subscribe('', (data: any) => {
-            console.log('received message!', data)
+            sendMessage('', 'got your message')
         })
 
-    }, [subscribe])
+        return () => {
+            unsubscribe()
+        }
+
+    }, [subscribe, sendMessage])
 
     return null
 }

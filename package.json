@@ -56,7 +56,6 @@
     ]
   },
   "devDependencies": {
-    "r3": "file:.yalc/r3",
     "react-app-rewired": "^2.1.8"
   }
 }

@@ -6,6 +6,7 @@ import {inputsRawState} from "../../../../main/inputs/state";
 import {joystickState} from "../../../../main/components/TouchHandler/TouchHandler";
 
 const velocity = Vec2(0, 0)
+const v2 = Vec2(0, 0)
 
 export const useController = (uuid: string, api: BodyApi) => {
 
@@ -26,8 +27,9 @@ export const useController = (uuid: string, api: BodyApi) => {
             yVel = inputsRawState.vertical
         }
 
-        velocity.set(xVel * 5, yVel * 5)
-        api.setLinearVelocity(velocity)
+        velocity.set(xVel * 1000 * delta, yVel * 1000 * delta)
+
+        api.applyLinearImpulse(velocity, v2)
 
     }, [api])
 

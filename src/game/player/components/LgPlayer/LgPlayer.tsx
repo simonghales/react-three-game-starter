@@ -1,12 +1,11 @@
-import React, {useEffect, useRef} from "react"
+import React, {useRef} from "react"
 import {getPlayerUuid} from "../../../../infrastructure/meshes/uuids";
 import {Object3D} from "three";
 import {Vec2} from "planck-js";
 import {
-    BodyShape,
     BodyType,
+    createCircleFixture,
     useBody,
-    useOnMessage, useSendMessage,
     useStoreMesh,
     useSyncWithMainComponent
 } from "react-three-game-engine";
@@ -21,35 +20,18 @@ const LgPlayer: React.FC = () => {
     useBody(() => ({
         type: BodyType.dynamic,
         position: Vec2(0, 0),
-        linearDamping: 4,
-        fixtures: [{
-            shape: BodyShape.circle,
-            radius: 0.55,
-            fixtureOptions: {
+        linearDamping: 15,
+        fixtures: [
+            createCircleFixture({radius: 0.55, fixtureOptions: {
                 density: 20,
-            }
-        }],
+            }})
+        ],
     }), {
         uuid,
         fwdRef: ref,
     })
 
     useSyncWithMainComponent(SyncComponentType.PLAYER, "player")
-
-    const subscribe = useOnMessage()
-    const sendMessage = useSendMessage()
-
-    useEffect(() => {
-
-        const unsubscribe = subscribe('', (data: any) => {
-            sendMessage('', 'got your message')
-        })
-
-        return () => {
-            unsubscribe()
-        }
-
-    }, [subscribe, sendMessage])
 
     return null
 }

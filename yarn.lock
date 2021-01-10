@@ -8409,11 +8409,6 @@ planck-js@^0.3.22:
   resolved "https://registry.yarnpkg.com/planck-js/-/planck-js-0.3.22.tgz#c0d29ca296a20f7b55b97259ca71053623070ee8"
   integrity sha512-aR7EeqPTdxnQJASk1DsS2ryRf1UCaHXR1F/VdKP2tJckXmwG4MHtTSQGKq9UcE1kZr5beFkgVLnBKBeq9u4ngA==
 
-planck-js@^0.3.23:
-  version "0.3.23"
-  resolved "https://registry.yarnpkg.com/planck-js/-/planck-js-0.3.23.tgz#e68ae3bcb8a0a45f4b727829af092b3597e39a8b"
-  integrity sha512-ycEWADSfGruJwTmdhyZM+jsT9WKu4FliNm08ApbNr3FJDKVeolmpmZlmWWFFnPJLJYj/nbxyerl9/QfawMbJcA==
-
 pnp-webpack-plugin@1.6.4:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/pnp-webpack-plugin/-/pnp-webpack-plugin-1.6.4.tgz#c9711ac4dc48a685dabafc86f8b6dd9f8df84149"
@@ -9302,12 +9297,6 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-"r3@file:.yalc/r3":
-  version "0.0.0"
-  dependencies:
-    planck-js "^0.3.23"
-    three "^0.124.0"
-
 r3f-perf@^0.75.1:
   version "0.75.1"
   resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.75.1.tgz#298ca95956c9d99d39527f455173007ab4dcf268"
@@ -9536,10 +9525,10 @@ react-three-fiber@^5.3.10:
     use-asset "^0.1.5"
     utility-types "^3.10.0"
 
-react-three-game-engine@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/react-three-game-engine/-/react-three-game-engine-0.9.1.tgz#cdd43346b3e6b56140905108bd3eaa22efe13e2d"
-  integrity sha512-dgVJfpu5Fr/B0DKapM9G88Td8BoI9eaRNShic3ihK65O+0I0MUo+CIVhRrCzwaYKWRW65YYQ5k6FiZiWC8wyQg==
+react-three-game-engine@^0.9.2-beta.2:
+  version "0.9.2-beta.2"
+  resolved "https://registry.yarnpkg.com/react-three-game-engine/-/react-three-game-engine-0.9.2-beta.2.tgz#ddebcdd18f293fdfe0a89a843ae912f9ecc8ebee"
+  integrity sha512-0mCLlY+Q6FUSByfv7QMlGAFX62voM7ezf8WsWKc89VwXV93uhom0xMLfGZqp6UMvwTwAP8Yp0nKuUksdx1U0rQ==
   dependencies:
     react-nil "^0.0.3"
     valtio "^0.5.2"

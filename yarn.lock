@@ -7166,6 +7166,11 @@ last-call-webpack-plugin@^3.0.0:
     lodash "^4.17.5"
     webpack-sources "^1.1.0"
 
+lerp@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/lerp/-/lerp-1.0.3.tgz#a18c8968f917896de15ccfcc28d55a6b731e776e"
+  integrity sha1-oYyJaPkXiW3hXM/MKNVaa3Med24=
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -9297,12 +9302,13 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-r3f-perf@^0.75.1:
-  version "0.75.1"
-  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.75.1.tgz#298ca95956c9d99d39527f455173007ab4dcf268"
-  integrity sha512-BQU/g+g/lTJJcDhHwdFfjWwn70ikw+GfQQEG1LVLTUp2UHdRlIc95NoS/UCe2anF9Z3gIfK6Fsp7PIvMKLQ4gQ==
+r3f-perf@^0.76.0:
+  version "0.76.0"
+  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.76.0.tgz#c706dce06e8aadf82598876bfc4996b5fcea331e"
+  integrity sha512-H/eRe4H5TmMLOUv/lNJkP2E99VIWXZiZoenkWcCrJyxwhGgn9s5KAfy+BnLUbQKNafYCeLwBpULzph/6V8X6GQ==
   dependencies:
     "@react-icons/all-files" "^4.1.0"
+    lerp "^1.0.3"
     zustand "^3.2.0"
 
 raf@^3.4.1:

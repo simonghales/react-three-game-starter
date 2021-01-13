@@ -1,9 +1,8 @@
-import React, {Suspense, useEffect, useLayoutEffect, useState} from "react";
-import {Engine} from "react-three-game-engine";
+import React, {Suspense, useLayoutEffect, useState} from "react";
+import {Engine, InstancesProvider, InstancedMesh} from "react-three-game-engine";
 import Player from "../../../../../player/components/Player/Player";
 import CameraProvider from "../../../../../elements/camera/components/CameraProvider/CameraProvider";
 import {SyncComponentType} from "../../../../../../misc/types";
-import InstancingProvider, {InstancedMesh} from "../../../../../../temp/instancing/InstancingProvider";
 
 const mappedComponentTypes = {
     [SyncComponentType.PLAYER]: Player,
@@ -22,12 +21,12 @@ const GameEngine: React.FC = ({children}) => {
     return (
         <CameraProvider>
             <Engine logicWorker={logicWorker} logicMappedComponents={mappedComponentTypes}>
-                <InstancingProvider>
+                <InstancesProvider>
                     <Suspense fallback={null}>
-                        <InstancedMesh maxInstances={10} meshKey="bamboo" gltfPath="/models/Bamboo_4.glb"/>
+                        <InstancedMesh maxInstances={10} meshKey="bamboo" gltfPath="/models/Bamboo_4.glb" meshProps={{castShadow: true, receiveShadow: true}}/>
                     </Suspense>
                     {children}
-                </InstancingProvider>
+                </InstancesProvider>
             </Engine>
         </CameraProvider>
     );

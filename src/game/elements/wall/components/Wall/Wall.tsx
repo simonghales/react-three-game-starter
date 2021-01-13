@@ -16,6 +16,8 @@ const Wall: React.FC = () => {
         }],
     }), {})
 
+    return null
+
     return (
         <Box args={[2, 2, 2]} position={[0, -3, 0]} castShadow receiveShadow>
             <meshStandardMaterial color={"#3c3762"} />

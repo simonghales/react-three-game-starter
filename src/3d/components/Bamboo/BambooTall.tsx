@@ -24,8 +24,8 @@ export default function BambooTall(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/Bamboo_4.glb') as GLTFResult
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh material={materials.Green} geometry={nodes.Cylinder016.geometry} castShadow />
-      <mesh material={materials.DarkGreen2} geometry={nodes.Cylinder016_1.geometry} castShadow />
+      <mesh material={nodes.Cylinder016.material} geometry={nodes.Cylinder016.geometry} castShadow />
+      <mesh material={nodes.Cylinder016_1.material} geometry={nodes.Cylinder016_1.geometry} castShadow />
     </group>
   )
 }

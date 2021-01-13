@@ -15,7 +15,7 @@
     "@types/styled-components": "^5.1.7",
     "hotkeys-js": "^3.8.1",
     "planck-js": "^0.3.22",
-    "r3f-perf": "^0.76.0",
+    "r3f-perf": "^0.76.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-nil": "^0.0.3",

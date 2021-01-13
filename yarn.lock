@@ -9302,10 +9302,10 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-r3f-perf@^0.76.0:
-  version "0.76.0"
-  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.76.0.tgz#c706dce06e8aadf82598876bfc4996b5fcea331e"
-  integrity sha512-H/eRe4H5TmMLOUv/lNJkP2E99VIWXZiZoenkWcCrJyxwhGgn9s5KAfy+BnLUbQKNafYCeLwBpULzph/6V8X6GQ==
+r3f-perf@^0.76.1:
+  version "0.76.1"
+  resolved "https://registry.yarnpkg.com/r3f-perf/-/r3f-perf-0.76.1.tgz#83352512735ffda76f78b473d9ed3c20405096e7"
+  integrity sha512-/OAdwAh143GAAyeGvCg4gI3hi2bvrjniQWff38w6epLcoRnqzfGsCnzn0Wpz/Qva7PBwOWzUm3f9glmVLT9NDw==
   dependencies:
     "@react-icons/all-files" "^4.1.0"
     lerp "^1.0.3"

@@ -13,6 +13,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.7",
+    "canvas-sketch-util": "^1.10.0",
     "hotkeys-js": "^3.8.1",
     "planck-js": "^0.3.22",
     "r3f-perf": "^0.76.1",

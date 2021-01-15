@@ -1,9 +1,13 @@
 import React from "react"
 import GameCanvas from "./components/GameCanvas/GameCanvas";
+import DevMenu from "../../../../development/components/DevMenu/DevMenu";
 
 const Game: React.FC = () => {
     return (
-        <GameCanvas/>
+        <>
+            <GameCanvas/>
+            <DevMenu/>
+        </>
     )
 }
 

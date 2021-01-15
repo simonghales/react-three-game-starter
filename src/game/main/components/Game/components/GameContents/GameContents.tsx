@@ -11,7 +11,6 @@ const GameContents: React.FC = () => {
             <Lights/>
             <Floor/>
             <Wall/>
-            <Bamboo/>
         </>
     )
 }

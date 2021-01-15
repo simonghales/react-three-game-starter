@@ -15,6 +15,7 @@ const StyledContainer = styled.div`
 `
 
 const GameCanvas: React.FC = () => {
+
     return (
         <StyledContainer>
             <TouchHandler>

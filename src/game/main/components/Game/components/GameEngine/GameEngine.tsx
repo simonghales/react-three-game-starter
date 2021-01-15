@@ -23,7 +23,7 @@ const GameEngine: React.FC = ({children}) => {
             <Engine logicWorker={logicWorker} logicMappedComponents={mappedComponentTypes}>
                 <InstancesProvider>
                     <Suspense fallback={null}>
-                        <InstancedMesh maxInstances={100} meshKey="bamboo" gltfPath="/models/Bamboo_4.glb" meshProps={{castShadow: true, receiveShadow: true}}/>
+                        <InstancedMesh maxInstances={1000} meshKey="bamboo" gltfPath="/models/Bamboo_4.glb" meshProps={{castShadow: true, receiveShadow: true}}/>
                     </Suspense>
                     {children}
                 </InstancesProvider>

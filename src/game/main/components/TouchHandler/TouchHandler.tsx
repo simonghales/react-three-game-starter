@@ -1,10 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react"
+import React, {ReactElement, useCallback, useEffect, useMemo, useRef, useState} from "react"
 import styled from "styled-components";
 import {useWindowSize} from "@react-hook/window-size";
 import {lerp} from "../../../../utils/numbers";
 import {proxy, useProxy} from "valtio";
 import {angleToVector, calculateVectorBetweenVectors, calculateVectorsDistance} from "../../../../utils/vectors";
 import {degToRad, vectorToAngle} from "../../../../utils/angles";
+import {devState} from "../../../../development/state";
 
 const StyledContainer = styled.div`
   width: 100%;
@@ -59,6 +60,8 @@ export const joystickState = {
 }
 
 const TouchHandler: React.FC = ({children}) => {
+
+    const editMode = useProxy(devState).editMode
 
     const joyStickRef = useRef<HTMLDivElement | null>(null)
     const joyStickInnerRef = useRef<HTMLDivElement | null>(null)
@@ -180,6 +183,8 @@ const TouchHandler: React.FC = ({children}) => {
 
     const onStart = useCallback((event: any) => {
 
+        if (editMode) return
+
         if (event.type === "mousedown") {
             const x = event.clientX
             const y = event.clientY
@@ -200,9 +205,11 @@ const TouchHandler: React.FC = ({children}) => {
                 addStartingPoint(clientX, clientY, StartingPoint.TOUCH, identifier)
             }
         }
-    }, [localState, addStartingPoint])
+    }, [localState, addStartingPoint, editMode])
 
     const onEnd = useCallback((event: any) => {
+
+        if (editMode) return
 
         if (event.type === "mouseup") {
             localState.mouseActive = false
@@ -215,9 +222,11 @@ const TouchHandler: React.FC = ({children}) => {
             })
         }
 
-    }, [localState, removeStartingPoint])
+    }, [localState, removeStartingPoint, editMode])
 
     const onMove = useCallback((event: any) => {
+
+        if (editMode) return
 
         if (event.type === 'mousemove' && localState.mouseActive) {
             handleMove(event.clientX, event.clientY, StartingPoint.MOUSE)
@@ -227,7 +236,7 @@ const TouchHandler: React.FC = ({children}) => {
                 handleMove(clientX, clientY, StartingPoint.TOUCH, identifier)
             })
         }
-    }, [handleMove])
+    }, [handleMove, editMode])
 
     useEffect(() => {
 
